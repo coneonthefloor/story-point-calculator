@@ -1,4 +1,4 @@
-import { isObject } from "./utils"
+import { isObject } from "./utils.js"
 
 export class StateStore extends EventTarget {
     static UPDATED = 'updated'
@@ -11,6 +11,7 @@ export class StateStore extends EventTarget {
         }
 
         super()
+
         this.updateState(state)
     }
 
@@ -45,11 +46,14 @@ export class StateStore extends EventTarget {
             throw new Error('A string value must be supplied as a reference to this state.')
         }
 
-        this.savedStates.set(name, this.getState())
+        const state = this.getState()
+        this.savedStates.set(name, state)
+
+        return [name, state]
     }
 
     removeSavedState(name) {
-        this.savedStates.delete(name)
+        return this.savedStates.delete(name)
     }
 
     revertToSavedState(name) {
@@ -57,6 +61,6 @@ export class StateStore extends EventTarget {
             throw new Error(`"${name}" does not match an existing state.`)
         }
 
-        this.updateState(this.savedStates.get(name))
+        return this.updateState(this.savedStates.get(name))
     }
 }

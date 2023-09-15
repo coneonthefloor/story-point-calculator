@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'bun:test'
-import { isObject } from './utils'
+import { camelToKebab, isObject, kebabToCamel } from './utils'
 
 describe('is object', () => {
     it('should determine if value is an object', () => {
@@ -13,5 +13,17 @@ describe('is object', () => {
         expect(isObject(null)).toBeFalse()
         expect(isObject(Infinity)).toBeFalse()
         expect(isObject(undefined)).toBeFalse()
+    })
+})
+
+describe('camel to kebab', () => {
+    it('should convert camelCase string to kebab-case', () => {
+        expect(camelToKebab('camelCase')).toBe('camel-case')
+    })
+})
+
+describe('kebab to camel', () => {
+    it('should convert kebab-case string to camelCase', () => {
+        expect(kebabToCamel('kebab-case')).toBe('kebabCase')
     })
 })

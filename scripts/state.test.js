@@ -86,11 +86,23 @@ describe("state store", () => {
         expect(store.savedStates.has('test')).toBeTrue()
     })
 
+    it('should return name and state as tuple when saved', () => {
+        const store = new StateStore({ name: 'test' })
+        expect(store.saveState('test')).toEqual(['test', { name: 'test' }])
+    })
+
     it('should remove saved state', () => {
         const store = new StateStore({})
         store.saveState('test')
         store.removeSavedState('test')
         expect(store.savedStates.has('test')).toBeFalse()
+    })
+
+    it('should return true or false on remove state', () => {
+        const store = new StateStore({})
+        store.saveState('test')
+        expect(store.removeSavedState('test')).toBeTrue()
+        expect(store.removeSavedState('test')).toBeFalse()
     })
 
     it('should not throw error if state does not exist on remove', () => {
@@ -104,6 +116,13 @@ describe("state store", () => {
         store.updateState({ count: 2 })
         store.revertToSavedState('one')
         expect(store.getState().count).toBe(1)
+    })
+
+    it('should return state when reverted', () => {
+        const store = new StateStore({ count: 1 })
+        store.saveState('one')
+        store.updateState({ count: 2 })
+        expect(store.revertToSavedState('one')).toEqual({ count: 1 })
     })
 
     it('should throw error if incorrect name given on save', () => {
