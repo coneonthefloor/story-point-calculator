@@ -17,7 +17,7 @@ describe("state store", () => {
     it('should throw error if state modified directly', () => {
         const testObj = { name: 'hello' }
         const stateStore = new StateStore(testObj)
-        expect(() => stateStore._state.name = 'error').toThrow()
+        expect(() => stateStore.state.name = 'error').toThrow()
     })
 
     it('should return copy of state', () => {
@@ -78,5 +78,46 @@ describe("state store", () => {
         const store = new StateStore({})
 
         expect(store.updateState(testObj)).toEqual(testObj)
+    })
+
+    it('should save state', () => {
+        const store = new StateStore({})
+        store.saveState('test')
+        expect(store.savedStates.has('test')).toBeTrue()
+    })
+
+    it('should remove saved state', () => {
+        const store = new StateStore({})
+        store.saveState('test')
+        store.removeSavedState('test')
+        expect(store.savedStates.has('test')).toBeFalse()
+    })
+
+    it('should not throw error if state does not exist on remove', () => {
+        const store = new StateStore({})
+        expect(() => store.removeSavedState('does not exists')).not.toThrow()
+    })
+
+    it('should revert to saved state', () => {
+        const store = new StateStore({ count: 1 })
+        store.saveState('one')
+        store.updateState({ count: 2 })
+        store.revertToSavedState('one')
+        expect(store.getState().count).toBe(1)
+    })
+
+    it('should throw error if incorrect name given on save', () => {
+        const store = new StateStore({})
+        expect(() => store.saveState()).toThrow()
+        expect(() => store.saveState('')).toThrow()
+        expect(() => store.saveState(null)).toThrow()
+    })
+
+    it('should throw error if incorrect name given on revert', () => {
+        const store = new StateStore({})
+        expect(() => store.revertToSavedState()).toThrow()
+        expect(() => store.revertToSavedState('')).toThrow()
+        expect(() => store.revertToSavedState(null)).toThrow()
+        expect(() => store.revertToSavedState('Does not exist')).toThrow()
     })
 })

@@ -3,6 +3,8 @@ import { isObject } from "./utils"
 export class StateStore extends EventTarget {
     static UPDATED = 'updated'
 
+    savedStates = new Map()
+
     constructor(state) {
         if (!isObject(state)) {
             throw new Error('A state object must be supplied when creating a state store.')
@@ -21,7 +23,7 @@ export class StateStore extends EventTarget {
             throw new Error('An object must be supplied when updating state.')
         }
 
-        this._state = Object.freeze(Object.assign({}, this.getState(), newState))
+        this.state = Object.freeze(Object.assign({}, this.getState(), newState))
 
         const updatedState = this.getState()
         this.dispatchEvent(new CustomEvent(StateStore.UPDATED, {
@@ -35,6 +37,26 @@ export class StateStore extends EventTarget {
     }
 
     getState() {
-        return Object.assign({}, this._state)
+        return Object.assign({}, this.state)
+    }
+
+    saveState(name) {
+        if (!name || typeof name !== 'string') {
+            throw new Error('A string value must be supplied as a reference to this state.')
+        }
+
+        this.savedStates.set(name, this.getState())
+    }
+
+    removeSavedState(name) {
+        this.savedStates.delete(name)
+    }
+
+    revertToSavedState(name) {
+        if (!this.savedStates.has(name)) {
+            throw new Error(`"${name}" does not match an existing state.`)
+        }
+
+        this.updateState(this.savedStates.get(name))
     }
 }
