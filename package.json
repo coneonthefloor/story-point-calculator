@@ -1,11 +1,14 @@
 {
   "name": "story-point-calculator",
   "module": "server/main.js",
-  "type": "module",
   "devDependencies": {
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  }
+  },
+  "scripts": {
+    "serve": "bun server/main.js"
+  },
+  "type": "module"
 }

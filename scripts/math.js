@@ -7,10 +7,10 @@
  */
 export function calculatePercentage(part, whole) {
     if (typeof part !== 'number' || typeof whole !== 'number' || whole === 0) {
-        throw new Error('Both "part" and "whole" must be numbers, and "whole" must not be zero.');
+        throw new Error('Both "part" and "whole" must be numbers, and "whole" must not be zero.')
     }
 
-    return (part / whole) * 100;
+    return (part / whole) * 100
 }
 
 /**
@@ -21,7 +21,7 @@ export function calculatePercentage(part, whole) {
  * @returns {number}
  */
 export function calculatePercentageValue(percentage, number) {
-    return number * (percentage / 100);
+    return number * (percentage / 100)
 }
 
 /**
@@ -31,7 +31,7 @@ export function calculatePercentageValue(percentage, number) {
  * @returns {number}
  */
 export function calculateSumOfNumbers(numbers) {
-    return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
 }
 
 /**
@@ -42,8 +42,8 @@ export function calculateSumOfNumbers(numbers) {
  */
 export function calculateAverage(numbers) {
     if (numbers.length === 0) {
-        return 0;
+        return 0
     }
 
-    return calculateSumOfNumbers(numbers) / numbers.length;
+    return calculateSumOfNumbers(numbers) / numbers.length
 }
