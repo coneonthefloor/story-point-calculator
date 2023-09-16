@@ -38,7 +38,17 @@ export function camelToKebab(camelCaseStr) {
 export function kebabToCamel(kebabCaseStr) {
     // Use a regular expression to find hyphens followed by lowercase letters
     // and replace them with the uppercase version of the letter
-    const camelCaseStr = kebabCaseStr.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
-  
-    return camelCaseStr;
-  }
+    const camelCaseStr = kebabCaseStr.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase())
+
+    return camelCaseStr
+}
+
+/**
+ * Returns true if the input value is truthy and false if it's falsy.
+ * 
+ * @param {*} value 
+ * @returns {boolean}
+ */
+export function isTruthy(value) {
+    return !!value
+}

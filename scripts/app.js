@@ -1,6 +1,6 @@
 import * as math from "./math.js"
 import { StateStore } from "./state.js"
-import { kebabToCamel } from "./utils.js"
+import { isTruthy } from "./utils.js"
 
 const store = new StateStore({
     daysInSprint: 10,
@@ -17,6 +17,14 @@ const store = new StateStore({
 
 store.onUpdate(({ detail: { state, updatedProperties } }) => {
     for (const property of updatedProperties) {
+        for (const $element of document.querySelectorAll(`[x-show="${property}"]`)) {
+            if (isTruthy(state[property])) {
+                $element.style.display = ''
+            } else {
+                $element.style.display = 'none'
+            }
+        }
+
         for (const $element of document.querySelectorAll(`[data-${property}]`)) {
             const target = $element.dataset[property]
             $element[target] = state[property]
@@ -42,11 +50,19 @@ const $greetingForm = document.getElementById('greeting-form')
 $greetingForm.addEventListener('submit', (e) => {
     e.preventDefault()
     const formData = new FormData($greetingForm)
+    mergeFormDataToStore(formData, store)
+})
+// $greetingForm.addEventListener('input', (e) => {
+//     const formData = new FormData($greetingForm)
+//     mergeFormDataToStore(formData, store)
+// })
+
+function mergeFormDataToStore(formData, store) {
     const update = {}
     for (const [key, value] of formData) {
         update[key] = value
     }
     store.updateState(update)
-})
+}
 
 console.log(predictedVelocity, velocityAllowingDisruption)
