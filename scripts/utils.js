@@ -38,9 +38,7 @@ export function camelToKebab(camelCaseStr) {
 export function kebabToCamel(kebabCaseStr) {
     // Use a regular expression to find hyphens followed by lowercase letters
     // and replace them with the uppercase version of the letter
-    const camelCaseStr = kebabCaseStr.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase())
-
-    return camelCaseStr
+    return kebabCaseStr.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase())
 }
 
 /**
@@ -51,4 +49,40 @@ export function kebabToCamel(kebabCaseStr) {
  */
 export function isTruthy(value) {
     return !!value
+}
+
+/**
+ * Returns true if the input value is falsy and false if it's truthy.
+ * 
+ * @param {*} value 
+ * @returns {boolean}
+ */
+export function isFalsy(value) {
+    return !value
+}
+
+/**
+ * Converts supplied FormData instance to a plain object.
+ * 
+ * @param {FormData} formData 
+ * @returns {*}
+ */
+export function formDataToObject(formData) {
+    const object = {};
+    formData.forEach((value, key) => {
+      // Check if the key already exists in the object
+      if (object.hasOwnProperty(key)) {
+        // If it's an array, push the new value
+        if (Array.isArray(object[key])) {
+          object[key].push(value);
+        } else {
+          // If it's not an array, convert it to an array and push the new value
+          object[key] = [object[key], value];
+        }
+      } else {
+        // If the key doesn't exist, simply set the value
+        object[key] = value;
+      }
+    });
+    return object;
 }

@@ -1,8 +1,8 @@
 import * as math from "./math.js"
-import { StateStore } from "./state.js"
-import { isTruthy } from "./utils.js"
+import { Store } from "./store.js"
+import { formDataToObject } from "./utils.js"
 
-const store = new StateStore({
+const store = new Store({
     daysInSprint: 10,
     previousSprintVelocities: [24, 22, 26],
     predictedDisruptionPercentage: 10,
@@ -15,26 +15,12 @@ const store = new StateStore({
     name: ''
 })
 
-store.onUpdate(({ detail: { state, updatedProperties } }) => {
-    for (const property of updatedProperties) {
-        for (const $element of document.querySelectorAll(`[x-show="${property}"]`)) {
-            if (isTruthy(state[property])) {
-                $element.style.display = ''
-            } else {
-                $element.style.display = 'none'
-            }
-        }
-
-        for (const $element of document.querySelectorAll(`[data-${property}]`)) {
-            const target = $element.dataset[property]
-            $element[target] = state[property]
-        }
-    }
-    console.log(updatedProperties, state)
-})
-
+const $greetingCard = store.addDom('#greeting-card')
 const [initialState, state] = store.saveState('initial')
 
+store.onUpdate(({ detail: { state, updatedProperties } }) => {
+    console.log(updatedProperties, state)
+})
 
 const totalDaysOff = state.team.reduce((accumulator, { daysOff }) => accumulator + daysOff, 0)
 const totalCapacity = state.daysInSprint * state.team.length
@@ -50,19 +36,12 @@ const $greetingForm = document.getElementById('greeting-form')
 $greetingForm.addEventListener('submit', (e) => {
     e.preventDefault()
     const formData = new FormData($greetingForm)
-    mergeFormDataToStore(formData, store)
+    store.updateState(formDataToObject(formData))
 })
 // $greetingForm.addEventListener('input', (e) => {
 //     const formData = new FormData($greetingForm)
 //     mergeFormDataToStore(formData, store)
 // })
 
-function mergeFormDataToStore(formData, store) {
-    const update = {}
-    for (const [key, value] of formData) {
-        update[key] = value
-    }
-    store.updateState(update)
-}
 
 console.log(predictedVelocity, velocityAllowingDisruption)
