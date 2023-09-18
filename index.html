@@ -8,19 +8,45 @@
 </head>
 
 <body>
-    <form id="greeting-form">
+    <form id="story-point-form">
         <div>
-            <label for="name">Enter your team name: </label>
-            <input type="text" name="name" id="name" />
+            <label for="team-name">Team Name</label>
+            <input type="text" name="teamName" id="team-name" />
         </div>
-        <button type="submit">greet</button>
+        <div>
+            <label for="sprint-length">Sprint Length (Days)</label>
+            <input type="number" name="sprintLength" id="sprint-length" />
+        </div>
+        <div>
+            <label for="average-velocity">Average Velocity</label>
+            <input type="number" name="averageVelocity" id="average-velocity" />
+        </div>
+        <div>
+            <label for="team-members">Team Members</label>
+            <input type="number" name="teamMembers" id="team-members" />
+        </div>
+        <div>
+            <label for="days-off">Total Days Off</label>
+            <input type="number" name="daysOff" id="days-off" />
+        </div>
+        <div>
+            <label for="disruption-allowance">Disruption Allowance (%)</label>
+            <input type="number" name="disruptionAllowance" id="disruption-allowance" />
+        </div>
+        <div>
+            <button type="submit">Get Predicted Velocity</button>
+        </div>
     </form>
 
-    <div id="greeting-card">
-        <div x-show="name" style="background: blue; width: 20px; height: 20px;"></div>
-        <p x-text="name"></p>
-        <p x-html="name"></p>
+    <div id="result" x-show="predictedVelocity">
+        <p>
+            Predicted Velocity: <span x-text="predictedVelocity"></span>
+        </p>
+        <p>
+            Predicted Velocity With Disruption: <span x-text="predictedVelocityWithDisruption"></span>
+        </p>
     </div>
+
     <script type="module" src="/scripts/app.js"></script>
 </body>
 

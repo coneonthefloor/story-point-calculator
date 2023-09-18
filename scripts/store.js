@@ -41,7 +41,7 @@ export class Store extends EventTarget {
         for (const property of updatedProperties) {
             const value = state[property]
 
-            for (const $element of $domTarget.querySelectorAll(`[x-show="${property}"]`)) {
+            for (const $element of $domTarget.parentElement.querySelectorAll(`[x-show="${property}"]`)) {
                 if (isTruthy(value)) {
                     $element.style.display = ''
                 } else {
@@ -49,11 +49,11 @@ export class Store extends EventTarget {
                 }
             }
 
-            for (const $element of $domTarget.querySelectorAll(`[x-text="${property}"]`)) {
+            for (const $element of $domTarget.parentElement.querySelectorAll(`[x-text="${property}"]`)) {
                 $element.innerText = value
             }
 
-            for (const $element of $domTarget.querySelectorAll(`[x-html="${property}"]`)) {
+            for (const $element of $domTarget.parentElement.querySelectorAll(`[x-html="${property}"]`)) {
                 $element.innerHTML = value
             }
         }
